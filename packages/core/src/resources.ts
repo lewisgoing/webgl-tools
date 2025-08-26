@@ -132,10 +132,79 @@ export function makeResourceTracker(gl: GL, opts: { logCreates?: boolean }): Res
     }
   }
 
-  function onTextureUpload(width: number, height: number, channelsBpp: number) {
-    const bytes = width * height * channelsBpp;
+  // Track buffer uploads
+  const _bufferData = gl.bufferData.bind(gl);
+  (gl as any).bufferData = function(target: number, sizeOrData: number | ArrayBuffer | ArrayBufferView, usage: number) {
+    let bytes = 0;
+    if (typeof sizeOrData === 'number') {
+      bytes = sizeOrData;
+    } else if (sizeOrData instanceof ArrayBuffer) {
+      bytes = sizeOrData.byteLength;
+    } else {
+      bytes = sizeOrData.byteLength;
+    }
     estBytes += bytes;
-    // attach to currently bound texture if tracked…
+    return _bufferData(target, sizeOrData, usage);
+  };
+
+  const _bufferSubData = gl.bufferSubData.bind(gl);
+  (gl as any).bufferSubData = function(target: number, offset: number, data: ArrayBuffer | ArrayBufferView) {
+    const bytes = data instanceof ArrayBuffer ? data.byteLength : data.byteLength;
+    // Don't add to estBytes as this updates existing buffer
+    return _bufferSubData(target, offset, data);
+  };
+
+  // Track texture uploads
+  const _texImage2D = gl.texImage2D.bind(gl);
+  (gl as any).texImage2D = function(...args: any[]) {
+    // texImage2D has multiple overloads
+    if (args.length >= 9) {
+      // Full specification: target, level, internalformat, width, height, border, format, type, pixels
+      const width = args[3];
+      const height = args[4];
+      const format = args[6];
+      const type = args[7];
+      const bpp = estimateBytesPerPixel(format, type);
+      estBytes += width * height * bpp;
+    }
+    return _texImage2D(...args);
+  };
+
+  function estimateBytesPerPixel(format: number, type: number): number {
+    // Basic estimation based on common formats
+    let channels = 1;
+    switch (format) {
+      case 0x1907: // RGB
+        channels = 3;
+        break;
+      case 0x1908: // RGBA
+        channels = 4;
+        break;
+      case 0x1909: // LUMINANCE
+      case 0x190A: // ALPHA
+        channels = 1;
+        break;
+      case 0x190B: // LUMINANCE_ALPHA
+        channels = 2;
+        break;
+    }
+    
+    let bytesPerComponent = 1;
+    switch (type) {
+      case 0x1401: // UNSIGNED_BYTE
+        bytesPerComponent = 1;
+        break;
+      case 0x1403: // UNSIGNED_SHORT
+      case 0x8D61: // HALF_FLOAT
+        bytesPerComponent = 2;
+        break;
+      case 0x1405: // UNSIGNED_INT
+      case 0x1406: // FLOAT
+        bytesPerComponent = 4;
+        break;
+    }
+    
+    return channels * bytesPerComponent;
   }
 
   function captureStack(): string {

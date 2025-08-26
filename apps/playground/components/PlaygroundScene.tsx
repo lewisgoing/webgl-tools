@@ -98,7 +98,7 @@ export default function PlaygroundScene() {
         sceneSetup = createResourceLeakScene()
         break
       default:
-        sceneSetup = createBasicScene()
+        sceneSetup = createBasicScene(objectCount)
     }
 
     sceneRef.current = sceneSetup.scene
@@ -237,7 +237,7 @@ export default function PlaygroundScene() {
   )
 }
 
-function createBasicScene() {
+function createBasicScene(count: number) {
   const scene = new THREE.Scene()
   scene.background = new THREE.Color(0x0a0a0a)
   
@@ -247,7 +247,7 @@ function createBasicScene() {
     0.1,
     1000
   )
-  camera.position.z = 5
+  camera.position.set(0, 0, 10)
 
   // Lighting
   const ambientLight = new THREE.AmbientLight(0x404040)
@@ -257,18 +257,44 @@ function createBasicScene() {
   directionalLight.position.set(5, 5, 5)
   scene.add(directionalLight)
 
-  // Create a rotating cube
-  const geometry = new THREE.BoxGeometry()
-  const material = new THREE.MeshPhongMaterial({ color: 0x4a9eff })
-  const cube = new THREE.Mesh(geometry, material)
-  scene.add(cube)
+  // Create multiple rotating cubes
+  const cubes: THREE.Mesh[] = []
+  const geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5)
+  
+  for (let i = 0; i < count; i++) {
+    const material = new THREE.MeshPhongMaterial({ 
+      color: new THREE.Color().setHSL(i / count, 0.5, 0.5) 
+    })
+    const cube = new THREE.Mesh(geometry, material)
+    
+    // Arrange in a grid
+    const gridSize = Math.ceil(Math.sqrt(count))
+    const x = (i % gridSize - gridSize / 2) * 1.5
+    const y = (Math.floor(i / gridSize) - gridSize / 2) * 1.5
+    cube.position.set(x, y, 0)
+    
+    scene.add(cube)
+    cubes.push(cube)
+  }
+
+  let time = 0
 
   return {
     scene,
     camera,
     update: () => {
-      cube.rotation.x += 0.01
-      cube.rotation.y += 0.01
+      time += 0.01
+      cubes.forEach((cube, i) => {
+        cube.rotation.x = time + i * 0.1
+        cube.rotation.y = time * 0.5 + i * 0.1
+        cube.position.z = Math.sin(time + i * 0.5) * 0.5
+      })
+    },
+    cleanup: () => {
+      geometry.dispose()
+      cubes.forEach(cube => {
+        (cube.material as THREE.Material).dispose()
+      })
     }
   }
 }

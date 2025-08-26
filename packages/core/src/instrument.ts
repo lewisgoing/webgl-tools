@@ -147,5 +147,18 @@ export function wrapGL(gl: GL, counters: CounterState, opts: WrapOptions): GL {
     };
   }
 
+  // Track buffer uploads
+  const _bufferData = gl.bufferData.bind(gl);
+  gl.bufferData = function(target: number, sizeOrData: any, usage: number) {
+    counters.bufferUploads++;
+    return _bufferData(target, sizeOrData, usage);
+  };
+
+  const _bufferSubData = gl.bufferSubData.bind(gl);
+  gl.bufferSubData = function(target: number, offset: number, data: any) {
+    counters.bufferUploads++;
+    return _bufferSubData(target, offset, data);
+  };
+
   return gl;
 }
