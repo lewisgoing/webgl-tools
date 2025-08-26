@@ -5,6 +5,11 @@ node_modules/
 
 # Testing
 coverage/
+playwright-report/
+test-results/
+jest-results.json
+test-*.js
+test-*.html
 
 # Production
 dist/

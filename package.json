@@ -1,7 +1,19 @@
 {
-  "name": "webgl-tools",
+  "name": "webgl-tools-monorepo",
   "version": "1.0.0",
   "private": true,
+  "description": "A comprehensive WebGL debugging and profiling toolkit",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lewisgoing/webgl-tools.git"
+  },
+  "keywords": ["webgl", "debugging", "profiling", "three.js", "performance"],
+  "author": "WebGL Tools Contributors",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lewisgoing/webgl-tools/issues"
+  },
+  "homepage": "https://github.com/lewisgoing/webgl-tools#readme",
   "workspaces": [
     "packages/*",
     "apps/*"

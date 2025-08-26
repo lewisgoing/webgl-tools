@@ -61,3 +61,26 @@ if (!global.performance) {
     now: () => Date.now(),
   };
 }
+
+// Suppress console warnings in tests for expected warnings
+global.beforeEach = global.beforeEach || (() => {});
+global.afterEach = global.afterEach || (() => {});
+
+// Store original console methods
+const originalConsole = {
+  warn: console.warn,
+  error: console.error,
+};
+
+// Mock console to suppress expected warnings
+console.warn = jest.fn((...args) => {
+  const message = args[0]?.toString() || '';
+  if (
+    message.includes('GPU timer queries not supported') ||
+    message.includes('Performance benchmark failed')
+  ) {
+    return; // Suppress these warnings
+  }
+  // Call original warn for other warnings
+  originalConsole.warn.apply(console, args);
+});

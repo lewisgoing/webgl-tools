@@ -19,5 +19,15 @@ module.exports = {
       lines: 80,
       statements: 80
     }
+  },
+  transform: {
+    '^.+\\.tsx?$': ['ts-jest', {
+      tsconfig: {
+        esModuleInterop: true
+      },
+      diagnostics: {
+        warnOnly: true
+      }
+    }]
   }
 };
