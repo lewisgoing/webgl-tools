@@ -29,9 +29,13 @@
     "test:all": "pnpm test:unit && pnpm test:e2e",
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck",
-    "clean": "turbo run clean && rm -rf node_modules"
+    "clean": "turbo run clean && rm -rf node_modules",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "pnpm build:packages && changeset publish"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.26.2",
     "@playwright/test": "^1.40.0",
     "@types/jest": "^29.5.0",
     "jest": "^29.5.0",

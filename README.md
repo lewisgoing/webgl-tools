@@ -4,6 +4,7 @@
 
 [![npm version](https://img.shields.io/npm/v/@webgltools/core.svg?style=flat-square)](https://www.npmjs.com/package/@webgltools/core)
 [![npm downloads](https://img.shields.io/npm/dm/@webgltools/core.svg?style=flat-square)](https://www.npmjs.com/package/@webgltools/core)
+[![GitHub Packages](https://img.shields.io/badge/GitHub%20Packages-published-blue.svg?style=flat-square)](https://github.com/lewisgoing?tab=packages&repo_name=webgl-tools)
 [![License](https://img.shields.io/npm/l/@webgltools/core.svg?style=flat-square)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg?style=flat-square)](https://www.typescriptlang.org/)
 [![WebGL](https://img.shields.io/badge/WebGL-1%20%26%202-green.svg?style=flat-square)](https://www.khronos.org/webgl/)
@@ -107,6 +108,9 @@ import('@webgltools/overlay').then(({ mountOverlay }) => {
 
 ## Installation
 
+Install from npm (recommended):
+
+
 ```bash
 # Using pnpm (recommended)
 pnpm add @webgltools/core
@@ -116,6 +120,15 @@ npm install @webgltools/core
 
 # Using yarn
 yarn add @webgltools/core
+```
+
+Or install from GitHub Packages:
+```bash
+# Configure npm to use GitHub Packages
+echo "@webgltools:registry=https://npm.pkg.github.com" >> ~/.npmrc
+
+# Install
+npm install @webgltools/core
 ```
 
 ## Quick Start
