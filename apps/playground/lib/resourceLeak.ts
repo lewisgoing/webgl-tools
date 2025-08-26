@@ -125,8 +125,9 @@ export function createResourceLeakScene() {
       textures.forEach(t => t.dispose())
       geometries.forEach(g => g.dispose())
       materials.forEach(m => {
-        if ('map' in m && m.map) m.map.dispose()
-        m.dispose()
+        const mat = m as THREE.Material & { map?: THREE.Texture }
+        if (mat.map) mat.map.dispose()
+        mat.dispose()
       })
     }
   }

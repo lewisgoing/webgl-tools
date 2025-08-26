@@ -144,6 +144,7 @@ export function makeResourceTracker(gl: GL, opts: { logCreates?: boolean }): Res
       bytes = sizeOrData.byteLength;
     }
     estBytes += bytes;
+    if (opts.logCreates) console.log('[BufferData]', bytes, 'bytes, total:', estBytes);
     return _bufferData(target, sizeOrData, usage);
   };
 
@@ -214,6 +215,8 @@ export function makeResourceTracker(gl: GL, opts: { logCreates?: boolean }): Res
 
   return {
     onBufferUpload(bytes: number) { estBytes += bytes; },
-    list, byKind, estBytes
+    list, 
+    byKind,
+    get estBytes() { return estBytes; }
   };
 }

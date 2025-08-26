@@ -15,6 +15,7 @@ export class WebGLDebugger implements WebGLDebuggerAPI {
   private fpsSamples: number[] = [];
   private mode: 'off'|'sampled'|'full';
   private sampleRate: number;
+  private originalFunctions: any = {};
 
   constructor(private gl: GL, private opts: DebuggerOptions = {}) {
     this.caps = detectCapabilities(this.gl);
@@ -24,13 +25,14 @@ export class WebGLDebugger implements WebGLDebuggerAPI {
     this.mode = opts.mode ?? 'sampled';
     this.sampleRate = opts.sampleRate ?? 0.25;
 
+    // Store original functions before wrapping
+    this.storeOriginalFunctions();
+
     // Narrow wrapping; enable instancing, binds, program switches only in sampled/full
     const active = this.mode !== 'off';
-    wrapGL(this.gl, this.counters, {
-      trackBinds: active,
-      trackPrograms: active,
-      trackInstancing: active,
-    });
+    if (active) {
+      this.applyWrapping();
+    }
   }
 
   beginFrame() {
@@ -84,11 +86,102 @@ export class WebGLDebugger implements WebGLDebuggerAPI {
     };
   }
 
+  // Alias for compatibility
+  getStats() {
+    return {
+      drawCalls: this.counters.drawCalls,
+      instancedDrawCalls: this.counters.instancedDrawCalls,
+      tris: this.counters.triangles,
+      points: this.counters.points,
+      lines: this.counters.lines
+    };
+  }
+
   getResources() {
     return { byKind: this.resources.byKind, estBytes: this.resources.estBytes, list: this.resources.list };
   }
 
+  // Alias for compatibility  
+  getResourceInfo() {
+    return this.getResources();
+  }
+
   getTimers() { return this.timers.stats(); }
+
+  // Add methods for testing/control
+  resetStats() {
+    this.counters.drawCalls = this.counters.instancedDrawCalls = 0;
+    this.counters.triangles = this.counters.points = this.counters.lines = 0;
+    this.counters.textureBinds = this.counters.shaderSwitches = 0;
+    this.counters.bufferUploads = 0;
+    this.counters.postPasses = 0;
+    this.counters.custom = {};
+  }
+
+  setMode(mode: 'off'|'sampled'|'full') {
+    this.mode = mode;
+    
+    // Restore original functions first
+    this.restoreOriginalFunctions();
+    
+    // Apply wrapping if active
+    const active = this.mode !== 'off';
+    if (active) {
+      this.applyWrapping();
+    }
+  }
+
+  private storeOriginalFunctions() {
+    this.originalFunctions.drawArrays = this.gl.drawArrays.bind(this.gl);
+    this.originalFunctions.drawElements = this.gl.drawElements.bind(this.gl);
+    this.originalFunctions.bindTexture = this.gl.bindTexture.bind(this.gl);
+    this.originalFunctions.useProgram = this.gl.useProgram.bind(this.gl);
+    
+    const isGL2 = typeof WebGL2RenderingContext !== 'undefined' && this.gl instanceof WebGL2RenderingContext;
+    if (isGL2) {
+      const gl2 = this.gl as WebGL2RenderingContext;
+      this.originalFunctions.drawArraysInstanced = gl2.drawArraysInstanced?.bind(gl2);
+      this.originalFunctions.drawElementsInstanced = gl2.drawElementsInstanced?.bind(gl2);
+    }
+  }
+
+  private restoreOriginalFunctions() {
+    if (this.originalFunctions.drawArrays) {
+      this.gl.drawArrays = this.originalFunctions.drawArrays;
+    }
+    if (this.originalFunctions.drawElements) {
+      this.gl.drawElements = this.originalFunctions.drawElements;
+    }
+    if (this.originalFunctions.bindTexture) {
+      this.gl.bindTexture = this.originalFunctions.bindTexture;
+    }
+    if (this.originalFunctions.useProgram) {
+      this.gl.useProgram = this.originalFunctions.useProgram;
+    }
+    
+    const isGL2 = typeof WebGL2RenderingContext !== 'undefined' && this.gl instanceof WebGL2RenderingContext;
+    if (isGL2) {
+      const gl2 = this.gl as WebGL2RenderingContext;
+      if (this.originalFunctions.drawArraysInstanced) {
+        gl2.drawArraysInstanced = this.originalFunctions.drawArraysInstanced;
+      }
+      if (this.originalFunctions.drawElementsInstanced) {
+        gl2.drawElementsInstanced = this.originalFunctions.drawElementsInstanced;
+      }
+    }
+  }
+
+  private applyWrapping() {
+    wrapGL(this.gl, this.counters, {
+      trackBinds: true,
+      trackPrograms: true,
+      trackInstancing: true,
+    });
+  }
+
+  dispose() {
+    // Cleanup if needed
+  }
 
   pushPass(_name: string) { this.counters.postPasses++; }
   incCustom(key: string, delta = 1) { this.counters.custom[key] = (this.counters.custom[key] || 0) + delta; }

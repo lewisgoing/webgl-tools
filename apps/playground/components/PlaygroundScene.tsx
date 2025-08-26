@@ -27,25 +27,48 @@ export default function PlaygroundScene() {
   useEffect(() => {
     if (!mountRef.current) return
 
-    // Create renderer
+    // Create canvas and context first
+    const canvas = document.createElement('canvas')
+    const gl = canvas.getContext('webgl2', { 
+      antialias: true,
+      powerPreference: 'high-performance'
+    }) || canvas.getContext('webgl', {
+      antialias: true,
+      powerPreference: 'high-performance'
+    })
+    
+    if (!gl) {
+      console.error('WebGL not supported')
+      return
+    }
+
+    // Initialize debugger BEFORE Three.js gets the context
+    const dbg = new WebGLDebugger(gl as WebGLRenderingContext | WebGL2RenderingContext, { 
+      mode: debugMode, 
+      sampleRate: 0.25,
+      logCreates: debugMode === 'full' 
+    })
+    debuggerRef.current = dbg
+    
+    // Debug logging
+    console.log('WebGL Debugger initialized:', {
+      mode: debugMode,
+      glType: gl.constructor.name
+    })
+
+    // Now create renderer with our instrumented context
     const renderer = new THREE.WebGLRenderer({ 
+      canvas,
+      context: gl as WebGLRenderingContext,
       antialias: true,
       powerPreference: 'high-performance'
     })
     renderer.setSize(window.innerWidth, window.innerHeight)
     renderer.setPixelRatio(window.devicePixelRatio)
-    mountRef.current.appendChild(renderer.domElement)
+    mountRef.current.appendChild(canvas)
     rendererRef.current = renderer
-
-    // Initialize debugger
-    const gl = renderer.getContext()
-    const dbg = new WebGLDebugger(gl, { 
-      mode: debugMode, 
-      sampleRate: 0.25,
-      logCreates: false 
-    })
+    
     attachThreeAdapter(renderer, dbg)
-    debuggerRef.current = dbg
 
     // Mount overlay
     if (showOverlay) {
@@ -62,8 +85,8 @@ export default function PlaygroundScene() {
       window.removeEventListener('resize', handleResize)
       if (animateRef.current) cancelAnimationFrame(animateRef.current)
       renderer.dispose()
-      if (mountRef.current?.contains(renderer.domElement)) {
-        mountRef.current.removeChild(renderer.domElement)
+      if (mountRef.current?.contains(canvas)) {
+        mountRef.current.removeChild(canvas)
       }
       dbg.unmountOverlay()
     }
@@ -105,6 +128,7 @@ export default function PlaygroundScene() {
     cleanupRef.current = sceneSetup.cleanup || null
 
     // Animation loop
+    let frameCount = 0
     const animate = () => {
       animateRef.current = requestAnimationFrame(animate)
       
@@ -117,6 +141,13 @@ export default function PlaygroundScene() {
       rendererRef.current!.render(sceneSetup.scene, sceneSetup.camera)
       
       debuggerRef.current!.endFrame()
+      
+      // Debug log every 60 frames
+      frameCount++
+      if (frameCount % 60 === 0) {
+        const stats = debuggerRef.current!.getStats()
+        console.log('Frame', frameCount, 'stats:', stats)
+      }
     }
     animate()
 
