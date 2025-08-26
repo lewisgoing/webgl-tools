@@ -1,8 +1,90 @@
 # WebGL Debugging Toolkit
 
+<div align="center">
+
+[![npm version](https://img.shields.io/npm/v/@webgltools/core.svg?style=flat-square)](https://www.npmjs.com/package/@webgltools/core)
+[![npm downloads](https://img.shields.io/npm/dm/@webgltools/core.svg?style=flat-square)](https://www.npmjs.com/package/@webgltools/core)
+[![License](https://img.shields.io/npm/l/@webgltools/core.svg?style=flat-square)](LICENSE)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg?style=flat-square)](https://www.typescriptlang.org/)
+[![WebGL](https://img.shields.io/badge/WebGL-1%20%26%202-green.svg?style=flat-square)](https://www.khronos.org/webgl/)
+
+[![Chrome](https://img.shields.io/badge/Chrome-✓-success.svg?style=flat-square&logo=google-chrome&logoColor=white)](https://www.google.com/chrome/)
+[![Firefox](https://img.shields.io/badge/Firefox-✓-success.svg?style=flat-square&logo=firefox&logoColor=white)](https://www.mozilla.org/firefox/)
+[![Safari](https://img.shields.io/badge/Safari-✓-success.svg?style=flat-square&logo=safari&logoColor=white)](https://www.apple.com/safari/)
+[![Edge](https://img.shields.io/badge/Edge-✓-success.svg?style=flat-square&logo=microsoft-edge&logoColor=white)](https://www.microsoft.com/edge)
+
+<p align="center">
+  <a href="https://webgltools.vercel.app">Live Demo</a> •
+  <a href="#installation">Installation</a> •
+  <a href="#quick-start">Quick Start</a> •
+  <a href="#documentation">Docs</a> •
+  <a href="#enhanced-features-usage">Features</a>
+</p>
+
+</div>
+
 A comprehensive, production-ready WebGL debugging and profiling toolkit that works with WebGL1 & WebGL2, raw GL and Three.js, with minimal overhead and safe fallbacks.
 
-**[Live Demo](https://webgltools.vercel.app)** | **[npm Packages](https://www.npmjs.com/org/webgltools)**
+---
+
+### See It In Action
+
+```javascript
+// 1. Import and initialize
+import { WebGLDebugger } from '@webgltools/core';
+const debug = new WebGLDebugger(gl, { mode: 'sampled' });
+
+// 2. Wrap your render loop
+function render() {
+  debug.beginFrame();
+  
+  // Your WebGL code here
+  gl.drawArrays(gl.TRIANGLES, 0, count);
+  
+  debug.endFrame();
+  console.log(`FPS: ${debug.fps} | Draw Calls: ${debug.drawCalls}`);
+}
+
+// 3. Add visual overlay (optional)
+import('@webgltools/overlay').then(({ mountOverlay }) => {
+  mountOverlay(debug);
+});
+```
+
+---
+
+### Why WebGL Tools?
+
+<table>
+<tr>
+<td>
+
+**Ultra-Low Overhead**
+<br>Smart sampling keeps your FPS high
+
+</td>
+<td>
+
+**Deep Insights**
+<br>GPU timers, memory tracking, draw analysis
+
+</td>
+<td>
+
+**Framework Agnostic**
+<br>Works with raw WebGL, Three.js, and more
+
+</td>
+<td>
+
+**Production Ready**
+<br>Safe fallbacks, no crashes, TypeScript
+
+</td>
+</tr>
+</table>
+
+---
 
 ## Features
 
@@ -156,16 +238,36 @@ const json = profiler.exportProfile(profile);
 
 ## Operating Modes
 
-- **`off`**: No instrumentation (production)
-- **`sampled`**: Probabilistic sampling for low-overhead monitoring
-- **`full`**: Complete instrumentation for development debugging
+Choose the right mode for your use case:
+
+| Mode | Performance Impact | Use Case | Features |
+|------|-------------------|----------|----------|
+| `off` | None | Production | No instrumentation |
+| `sampled` | ~1-2% | Production monitoring | Statistical sampling |
+| `full` | ~5-10% | Development | Complete tracking |
+
+```javascript
+// Production with monitoring
+const debug = new WebGLDebugger(gl, { 
+  mode: 'sampled',
+  sampleRate: 0.1 // 10% sampling
+});
+
+// Development debugging
+const debug = new WebGLDebugger(gl, { 
+  mode: 'full',
+  logCreates: true
+});
+```
 
 ## Package Structure
 
-- `@webgltools/core` - Core debugging functionality
-- `@webgltools/overlay` - React-based visual overlay
-- `@webgltools/three-adapter` - Three.js integration
-- `@webgltools/spector-bridge` - Spector.js metadata support
+| Package | Description | Version |
+|---------|-------------|---------|  
+| [`@webgltools/core`](https://www.npmjs.com/package/@webgltools/core) | Core debugging functionality | ![npm](https://img.shields.io/npm/v/@webgltools/core.svg?style=flat-square) |
+| [`@webgltools/overlay`](https://www.npmjs.com/package/@webgltools/overlay) | React-based visual overlay | ![npm](https://img.shields.io/npm/v/@webgltools/overlay.svg?style=flat-square) |
+| [`@webgltools/three-adapter`](https://www.npmjs.com/package/@webgltools/three-adapter) | Three.js integration | ![npm](https://img.shields.io/npm/v/@webgltools/three-adapter.svg?style=flat-square) |
+| [`@webgltools/spector-bridge`](https://www.npmjs.com/package/@webgltools/spector-bridge) | Spector.js metadata support | ![npm](https://img.shields.io/npm/v/@webgltools/spector-bridge.svg?style=flat-square) |
 
 ## Development
 
