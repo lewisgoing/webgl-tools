@@ -203,3 +203,9 @@ export * from './caps';
 export { concatWithLineDirectives, parseGLSLInfoLog } from './shaderErrors';
 export { FBODebugger } from './fbo';
 export { bppFor } from './estimates';
+
+// Export enhanced features
+export { ShaderErrorFormatter } from './shaderErrorEnhanced';
+export { FBOInspector } from './fboInspector';
+export { EnhancedGPUTimers } from './timersEnhanced';
+export { PerformanceProfiler } from './performanceProfiler';
