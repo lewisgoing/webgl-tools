@@ -1,5 +1,5 @@
 import React from 'react';
-import type { WebGLDebugger } from '@webgl-tools/core';
+import type { WebGLDebugger } from '@webgltools/core';
 
 export interface FBOInspectorPanelProps {
   debugger: WebGLDebugger;

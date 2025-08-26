@@ -1,5 +1,5 @@
 {
-  "name": "@webgl-tools/examples",
+  "name": "@webgltools/examples",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -8,9 +8,9 @@
     "build": "echo 'Examples package does not need build'"
   },
   "dependencies": {
-    "@webgl-tools/core": "workspace:*",
-    "@webgl-tools/overlay": "workspace:*",
-    "@webgl-tools/three-adapter": "workspace:*",
+    "@webgltools/core": "workspace:*",
+    "@webgltools/overlay": "workspace:*",
+    "@webgltools/three-adapter": "workspace:*",
     "three": "^0.160.0"
   },
   "devDependencies": {

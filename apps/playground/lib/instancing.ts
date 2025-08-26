@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import type { WebGLDebugger } from '@webgl-tools/core'
+import type { WebGLDebugger } from '@webgltools/core'
 
 export function createInstancingScene(count: number) {
   const scene = new THREE.Scene()

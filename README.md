@@ -2,6 +2,8 @@
 
 A comprehensive, production-ready WebGL debugging and profiling toolkit that works with WebGL1 & WebGL2, raw GL and Three.js, with minimal overhead and safe fallbacks.
 
+**[Live Demo](https://webgltools.vercel.app)** | **[npm Packages](https://www.npmjs.com/org/webgltools)**
+
 ## Features
 
 ### Core Debugging
@@ -25,19 +27,19 @@ A comprehensive, production-ready WebGL debugging and profiling toolkit that wor
 
 ```bash
 # Using pnpm (recommended)
-pnpm add @webgl-tools/core
+pnpm add @webgltools/core
 
 # Using npm
-npm install @webgl-tools/core
+npm install @webgltools/core
 
 # Using yarn
-yarn add @webgl-tools/core
+yarn add @webgltools/core
 ```
 
 ## Quick Start
 
 ```typescript
-import { WebGLDebugger } from '@webgl-tools/core';
+import { WebGLDebugger } from '@webgltools/core';
 
 // 1. Get WebGL context
 const canvas = document.querySelector('canvas')!;
@@ -67,7 +69,7 @@ function render() {
 }
 
 // 4. Optional: Add visual overlay
-import('@webgl-tools/overlay').then(({ mountOverlay }) => {
+import('@webgltools/overlay').then(({ mountOverlay }) => {
   mountOverlay(debug);
 });
 ```
@@ -75,8 +77,8 @@ import('@webgl-tools/overlay').then(({ mountOverlay }) => {
 ## Three.js Integration
 
 ```typescript
-import { WebGLDebugger } from '@webgl-tools/core';
-import { attachThreeAdapter } from '@webgl-tools/three-adapter';
+import { WebGLDebugger } from '@webgltools/core';
+import { attachThreeAdapter } from '@webgltools/three-adapter';
 import * as THREE from 'three';
 
 const renderer = new THREE.WebGLRenderer();
@@ -100,7 +102,7 @@ function animate() {
 ### Shader Error Formatting
 
 ```typescript
-import { ShaderErrorFormatter } from '@webgl-tools/core';
+import { ShaderErrorFormatter } from '@webgltools/core';
 
 // Compile shader with enhanced error reporting
 const shader = gl.createShader(gl.VERTEX_SHADER);
@@ -117,7 +119,7 @@ if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
 ### FBO Inspector
 
 ```typescript
-import { FBOInspector } from '@webgl-tools/core';
+import { FBOInspector } from '@webgltools/core';
 
 const inspector = new FBOInspector(gl);
 
@@ -138,7 +140,7 @@ const histogram = inspector.createHistogram(null, 'luminance');
 ### Performance Profiling
 
 ```typescript
-import { PerformanceProfiler } from '@webgl-tools/core';
+import { PerformanceProfiler } from '@webgltools/core';
 
 const profiler = new PerformanceProfiler(gl);
 
@@ -160,10 +162,10 @@ const json = profiler.exportProfile(profile);
 
 ## Package Structure
 
-- `@webgl-tools/core` - Core debugging functionality
-- `@webgl-tools/overlay` - React-based visual overlay
-- `@webgl-tools/three-adapter` - Three.js integration
-- `@webgl-tools/spector-bridge` - Spector.js metadata support
+- `@webgltools/core` - Core debugging functionality
+- `@webgltools/overlay` - React-based visual overlay
+- `@webgltools/three-adapter` - Three.js integration
+- `@webgltools/spector-bridge` - Spector.js metadata support
 
 ## Development
 

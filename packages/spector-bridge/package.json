@@ -1,5 +1,5 @@
 {
-  "name": "@webgl-tools/spector-bridge",
+  "name": "@webgltools/spector-bridge",
   "version": "1.0.0",
   "main": "dist/index.js",
   "module": "dist/index.mjs",

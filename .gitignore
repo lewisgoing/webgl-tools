@@ -45,3 +45,7 @@ yarn-error.log*
 .vscode/
 *.swp
 *.swo
+
+# Internal documentation
+.internal-docs/
+PUBLISH_STEPS.md

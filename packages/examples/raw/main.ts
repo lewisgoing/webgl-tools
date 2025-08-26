@@ -1,4 +1,4 @@
-import { WebGLDebugger } from '@webgl-tools/core';
+import { WebGLDebugger } from '@webgltools/core';
 
 const canvas = document.querySelector('canvas')!;
 const gl = canvas.getContext('webgl2', { antialias: true })!;
@@ -17,4 +17,4 @@ function frame() {
 requestAnimationFrame(frame);
 
 // (Optional) mount overlay
-import('@webgl-tools/overlay').then(({ mountOverlay }) => mountOverlay(dbg));
+import('@webgltools/overlay').then(({ mountOverlay }) => mountOverlay(dbg));

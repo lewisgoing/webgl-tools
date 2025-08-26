@@ -1,15 +1,15 @@
-# @webgl-tools/core
+# @webgltools/core
 
 Core WebGL debugging and profiling functionality for the WebGL Debugging Toolkit.
 
 ## Installation
 
 ```bash
-npm install @webgl-tools/core
+npm install @webgltools/core
 # or
-yarn add @webgl-tools/core
+yarn add @webgltools/core
 # or
-pnpm add @webgl-tools/core
+pnpm add @webgltools/core
 ```
 
 ## Features
@@ -25,7 +25,7 @@ pnpm add @webgl-tools/core
 ## Quick Start
 
 ```typescript
-import { WebGLDebugger } from '@webgl-tools/core';
+import { WebGLDebugger } from '@webgltools/core';
 
 const canvas = document.querySelector('canvas');
 const gl = canvas.getContext('webgl2');

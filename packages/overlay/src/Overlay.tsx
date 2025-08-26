@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, memo } from 'react';
-import type { WebGLDebugger } from '@webgl-tools/core';
+import type { WebGLDebugger } from '@webgltools/core';
 import { StatsPanel } from './panels/StatsPanel';
 import { ResourcesPanel } from './panels/ResourcesPanel';
 import { TimersPanel } from './panels/TimersPanel';

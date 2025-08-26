@@ -277,7 +277,7 @@ export class PerformanceProfiler {
     const fbo = this.gl.createFramebuffer();
     const texture = this.gl.createTexture();
     this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
-    this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, size, size, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, null);
+    (this.gl as any).texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, size, size, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, null);
     this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, fbo);
     this.gl.framebufferTexture2D(this.gl.FRAMEBUFFER, this.gl.COLOR_ATTACHMENT0, this.gl.TEXTURE_2D, texture, 0);
     
@@ -320,14 +320,14 @@ export class PerformanceProfiler {
       this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
       
       // Warm up
-      this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, size, size, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, data);
+      (this.gl as any).texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, size, size, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, data);
       
       // Benchmark
       const iterations = 10;
       const start = performance.now();
       
       for (let i = 0; i < iterations; i++) {
-        this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, size, size, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, data);
+        (this.gl as any).texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, size, size, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, data);
       }
       
       this.gl.finish();

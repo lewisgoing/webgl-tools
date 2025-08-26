@@ -1,5 +1,5 @@
 {
-  "name": "@webgl-tools/three-adapter",
+  "name": "@webgltools/three-adapter",
   "version": "1.0.0",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -10,7 +10,7 @@
     "clean": "rm -rf dist .turbo"
   },
   "dependencies": {
-    "@webgl-tools/core": "workspace:*"
+    "@webgltools/core": "^1.0.0"
   },
   "devDependencies": {
     "tsup": "^8.0.0",

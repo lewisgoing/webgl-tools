@@ -1,5 +1,5 @@
 {
-  "name": "@webgl-tools/core",
+  "name": "@webgltools/core",
   "version": "1.0.0",
   "description": "Core WebGL debugging and profiling functionality",
   "main": "dist/index.js",
@@ -38,6 +38,18 @@
     "lint": "eslint src --ext .ts,.tsx",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist .turbo"
+  },
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "peerDependencies": {
+    "@types/webgl2": "*"
+  },
+  "peerDependenciesMeta": {
+    "@types/webgl2": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

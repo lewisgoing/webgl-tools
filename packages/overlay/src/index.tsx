@@ -1,7 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Overlay } from './Overlay';
-import type { WebGLDebugger } from '@webgl-tools/core';
+import type { WebGLDebugger } from '@webgltools/core';
 
 export function mountOverlay(dbg: WebGLDebugger, root?: HTMLElement, panels?: string[]) {
   const container = root || document.createElement('div');

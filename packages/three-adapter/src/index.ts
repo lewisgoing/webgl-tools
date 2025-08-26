@@ -1,4 +1,4 @@
-import type { WebGLDebuggerAPI } from '@webgl-tools/core';
+import type { WebGLDebuggerAPI } from '@webgltools/core';
 
 export function attachThreeAdapter(renderer: any, dbg: WebGLDebuggerAPI) {
   // Use renderer.info.* where accurate, but keep core counters as ground truth

@@ -32,14 +32,14 @@ importers:
 
   apps/playground:
     dependencies:
-      '@webgl-tools/core':
-        specifier: workspace:*
+      '@webgltools/core':
+        specifier: ^1.0.0
         version: link:../../packages/core
-      '@webgl-tools/overlay':
-        specifier: workspace:*
+      '@webgltools/overlay':
+        specifier: ^1.0.0
         version: link:../../packages/overlay
-      '@webgl-tools/three-adapter':
-        specifier: workspace:*
+      '@webgltools/three-adapter':
+        specifier: ^1.0.0
         version: link:../../packages/three-adapter
       next:
         specifier: ^14.0.0
@@ -71,6 +71,10 @@ importers:
         version: 5.3.2
 
   packages/core:
+    dependencies:
+      '@types/webgl2':
+        specifier: '*'
+        version: 0.0.0
     devDependencies:
       '@types/node':
         specifier: ^20.0.0
@@ -84,13 +88,13 @@ importers:
 
   packages/examples:
     dependencies:
-      '@webgl-tools/core':
+      '@webgltools/core':
         specifier: workspace:*
         version: link:../core
-      '@webgl-tools/overlay':
+      '@webgltools/overlay':
         specifier: workspace:*
         version: link:../overlay
-      '@webgl-tools/three-adapter':
+      '@webgltools/three-adapter':
         specifier: workspace:*
         version: link:../three-adapter
       three:
@@ -106,8 +110,8 @@ importers:
 
   packages/overlay:
     dependencies:
-      '@webgl-tools/core':
-        specifier: workspace:*
+      '@webgltools/core':
+        specifier: ^1.0.0
         version: link:../core
       react:
         specifier: ^18.2.0
@@ -140,8 +144,8 @@ importers:
 
   packages/three-adapter:
     dependencies:
-      '@webgl-tools/core':
-        specifier: workspace:*
+      '@webgltools/core':
+        specifier: ^1.0.0
         version: link:../core
       three:
         specifier: '>=0.140.0'
@@ -1359,6 +1363,10 @@ packages:
   /@types/tough-cookie@4.0.5:
     resolution: {integrity: sha512-/Ad8+nIOV7Rl++6f1BdKxFSMgmoqEoYbHRpPcx3JEfv8VRsQe9Z4mCXeJBzxs7mbHY/XOZZuXlRNfhpVPbs6ZA==}
     dev: true
+
+  /@types/webgl2@0.0.0:
+    resolution: {integrity: sha512-7ZJTJw4p6HTZkUXS1JrZnt30MWBhtsydn+jPOPcz6Wn+EJ32v4iZJAuTRDecQKuQcbCjeZeyeYnCQnPuL/SUHA==}
+    dev: false
 
   /@types/webxr@0.5.22:
     resolution: {integrity: sha512-Vr6Stjv5jPRqH690f5I5GLjVk8GSsoQSYJ2FVd/3jJF7KaqfwPi3ehfBS96mlQ2kPCwZaX6U0rG2+NGHBKkA/A==}

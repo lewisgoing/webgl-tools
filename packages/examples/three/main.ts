@@ -1,6 +1,6 @@
 import * as THREE from 'three';
-import { WebGLDebugger } from '@webgl-tools/core';
-import { attachThreeAdapter } from '@webgl-tools/three-adapter';
+import { WebGLDebugger } from '@webgltools/core';
+import { attachThreeAdapter } from '@webgltools/three-adapter';
 
 // Create scene
 const scene = new THREE.Scene();
@@ -39,6 +39,6 @@ function animate() {
 animate();
 
 // Mount overlay
-import('@webgl-tools/overlay').then(({ mountOverlay }) => 
+import('@webgltools/overlay').then(({ mountOverlay }) => 
   mountOverlay(dbg, undefined, ['stats', 'resources', 'timers', 'device'])
 );

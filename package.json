@@ -1,5 +1,5 @@
 {
-  "name": "webgl-tools-monorepo",
+  "name": "webgl-tools",
   "version": "1.0.0",
   "private": true,
   "description": "A comprehensive WebGL debugging and profiling toolkit",
